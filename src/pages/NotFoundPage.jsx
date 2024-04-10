@@ -1,5 +1,5 @@
-import React from 'react'
-import { Routes, Route, Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NotFoundPage = () => {
   return (
@@ -8,6 +8,6 @@ const NotFoundPage = () => {
       <Link to="/"> HomePage </Link>
     </div>
   );
-}
+};
 
-export default NotFoundPage
+export default NotFoundPage;

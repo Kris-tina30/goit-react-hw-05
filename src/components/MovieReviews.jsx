@@ -1,10 +1,37 @@
-// import React from 'react'
-// import { useSearchParams } from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getMovieReviews } from './services/api';
+import ReviewsItem from './ReviewsItem';
 
-// const MovieReviews = () => {
-//   const [searchParams] = useSearchParams();
-//  const reviews = searchParams.get('reviews');
-//   return <div>MovieReviews</div>;
-// }
+const MovieReviews = () => {
+  const [reviews, setReviews] = useState([]);
+  const { movieId } = useParams();
 
-// export default MovieReviews
+  useEffect(() => {
+    if (!movieId) {
+      return;
+    }
+    const fetchMovieReviews = async () => {
+      try {
+        const results = await getMovieReviews(movieId);
+        setReviews(results);
+      } catch (error) {
+        console.log('error:', error);
+      }
+    };
+    fetchMovieReviews();
+  }, [movieId]);
+
+  return (
+    <ul>
+      {reviews.length ? (
+        <ReviewsItem reviews={reviews} />
+      ) : (
+        <p>We do not have any reviews for this movie</p>
+      )}
+    </ul>
+  );
+};
+
+export default MovieReviews;

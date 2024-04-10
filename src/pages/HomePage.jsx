@@ -1,20 +1,24 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-// import { Routes, Route, Link, NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Loader from '../components/Loader';
 import MovieList from '../components/MovieList';
-import { requestTrendingMovie } from '../components/services/api';
+import { getTrendingMovies } from '../components/services/api';
+import css from './HomePage.module.css';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchMovies() {
       try {
-        const response = await requestTrendingMovie();
-        setMovies(response.results);
-        console.log(response.results);
+        const data = await getTrendingMovies();
+        setMovies(data.results);
+        setIsLoading(false);
       } catch (error) {
-        console.log(error);
+        console.log('error:', error);
       }
     }
 
@@ -22,9 +26,10 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
-      <MovieList movies={movies} />
-      {/* <Outlet /> */}
+    <div className={css.list}>
+      <h1 className={css.title}>Tradding today</h1>
+      {isLoading && <Loader />}
+      <MovieList movies={movies} location={location} />
     </div>
   );
 };

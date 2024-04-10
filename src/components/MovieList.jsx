@@ -1,17 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import css from './MovieList.module.css';
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, location }) => {
   return (
-    <div>
-      <h1>Tradding today</h1>
-      <ul>
-        {movies.map(movie => (
-          <li key={movie.id}>
-            <h3>{movie.original_title}</h3>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className={css.movieList}>
+      {movies.map(movie => (
+        <li key={movie.id}>
+          <Link to={`/movies/${movie.id}`} state={{ from: location }}>
+            {movie.original_title}
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 };
 
